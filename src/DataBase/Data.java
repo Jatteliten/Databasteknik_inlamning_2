@@ -10,6 +10,7 @@ public class Data {
     private final ArrayList<Colour> colours;
     private final ArrayList<Category> categories;
     private final ArrayList<Shoe> shoes;
+    private Customer activeCustomer;
 
     private Data() throws IOException {
         cities  = Repository.getRepository().loadCities();
@@ -25,6 +26,14 @@ public class Data {
             data = new Data();
         }
         return data;
+    }
+
+    public Customer getActiveCustomer() {
+        return activeCustomer;
+    }
+
+    public void setActiveCustomer(Customer activeCustomer) {
+        this.activeCustomer = activeCustomer;
     }
 
     public ArrayList<City> getCities() {

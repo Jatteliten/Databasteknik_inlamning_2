@@ -10,7 +10,6 @@ public class ShoppingFrame extends JFrame {
     private final ShopChoices shopChoicesPanel = ShopChoices.getShopChoices();
     private final UserNameAndPassWordEntry userNameAndPassWordEntry = UserNameAndPassWordEntry.getUserNameAndPassWordEntry();
     private final ShoppingPanel shoppingPanelPanel = ShoppingPanel.getAddToCart();
-    private Customer activeCustomer;
 
     private ShoppingFrame() throws IOException {
         setSize(800, 800);
@@ -18,14 +17,6 @@ public class ShoppingFrame extends JFrame {
         setLocationRelativeTo(null);
         add(shopChoicesPanel);
         setVisible(true);
-    }
-
-    public Customer getActiveCustomer() {
-        return activeCustomer;
-    }
-
-    public void setActiveCustomer(Customer activeCustomer) {
-        this.activeCustomer = activeCustomer;
     }
 
     public static ShoppingFrame getShoppingFrame() throws IOException {

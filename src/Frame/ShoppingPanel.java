@@ -1,6 +1,7 @@
 package Frame;
 
 import DataBase.Data;
+import DataBase.Repository;
 import DataBase.Shoe;
 
 import javax.swing.*;
@@ -75,6 +76,21 @@ public class ShoppingPanel extends JPanel {
         });
         add(cancelButton);
         JButton confirmButton = new JButton("Place order");
+        confirmButton.addActionListener(e ->{
+            int orderNumber = 0;
+            for(int i = 0; i < shoesInCart.size(); i++){
+                try {
+                    if(i == 0){
+                        orderNumber = Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(),
+                                -1, shoesInCart.get(i));
+                    }else{
+                        Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(), orderNumber, shoesInCart.get(i));
+                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         add(confirmButton);
     }
 

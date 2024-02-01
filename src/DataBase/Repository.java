@@ -2,11 +2,13 @@ package DataBase;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -187,6 +189,28 @@ public class Repository {
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    public int placeOrder(Customer customer, int orderNumber, Shoe shoe) throws IOException{
+        p.load(new FileInputStream("src/Settings.properties"));
+        int orderNumberOut;
+        try(Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("name"),
+                p.getProperty("password"))){
+            CallableStatement stmt = con.prepareCall("CALL addToCart(?, ?, ?)");
+            stmt.setInt(1, customer.getId());
+            stmt.registerOutParameter(2, Types.INTEGER);
+            if(orderNumber != -1) {
+                stmt.setInt(2, orderNumber);
+            }
+            stmt.setInt(3, shoe.getId());
+            stmt.execute();
+            orderNumberOut = stmt.getInt(2);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return orderNumberOut;
     }
 
 }
