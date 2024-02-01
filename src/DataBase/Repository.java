@@ -210,6 +210,7 @@ public class Repository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        shoe.setStock(shoe.getStock() - 1);
         return orderNumberOut;
     }
 

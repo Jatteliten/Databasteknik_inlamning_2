@@ -47,6 +47,9 @@ public class Shoe {
         return stock;
     }
 
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
     public ArrayList<Category> getCategories() {
         return categories;
     }
