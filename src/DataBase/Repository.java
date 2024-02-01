@@ -51,11 +51,10 @@ public class Repository {
                 p.getProperty("name"),
                 p.getProperty("password"));
              Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("select id, name, cityId, password from customers")) {
+             ResultSet rs = stmt.executeQuery("select id, name, cityId from customers")) {
 
             while(rs.next()){
-                Customer newCustomer = new Customer(rs.getInt("id"), rs.getString("name"),
-                        rs.getString("password"));
+                Customer newCustomer = new Customer(rs.getInt("id"), rs.getString("name"));
                 for(City c: cities){
                     if(c.getId() == rs.getInt("cityId")){
                         newCustomer.setCity(c);
@@ -171,5 +170,23 @@ public class Repository {
         }
     }
 
+    public boolean findPassword(Customer customer, String password) throws IOException {
+        p.load(new FileInputStream("src/Settings.properties"));
+        try (Connection con = DriverManager.getConnection(
+                p.getProperty("connectionString"),
+                p.getProperty("name"),
+                p.getProperty("password"));
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select customers.password from customers where id = " + customer.getId())) {
+
+            if(rs.next()){
+                return rs.getString("password").equals(password);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 
 }

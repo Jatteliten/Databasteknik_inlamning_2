@@ -47,7 +47,7 @@ public class UserNameAndPassWordEntry extends JPanel {
                 boolean customerFound = false;
                 for(Customer c: Data.getData().getCustomers()){
                     if(userName.getText().equalsIgnoreCase(c.getName()) &&
-                    password.getText().equalsIgnoreCase(c.getPassword())){
+                            Repository.getRepository().findPassword(c, password.getText())){
                         ShoppingFrame.getShoppingFrame().setActiveCustomer(c);
                         ShoppingFrame.getShoppingFrame().switchPanel(Panels.ADD_TO_CART);
                         customerFound = true;
