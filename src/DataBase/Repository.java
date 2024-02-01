@@ -12,21 +12,9 @@ import java.util.Properties;
 
 public class Repository {
     private static Repository repository;
-    private ArrayList<City> cities;
-    private ArrayList<Customer> customers;
-    private ArrayList<Colour> colours;
-    private ArrayList<Category> categories;
-    private ArrayList<Shoe> shoes;
     private final Properties p = new Properties();
 
-    private Repository() throws IOException {
-        loadCities();
-        loadCustomers();
-        loadColours();
-        loadCategories();
-        loadShoes();
-        assignShoeCategories();
-    }
+    private Repository() throws IOException {}
 
     public static Repository getRepository() throws IOException {
         if(repository == null){
@@ -35,28 +23,8 @@ public class Repository {
         return repository;
     }
 
-    public ArrayList<City> getCities() {
-        return cities;
-    }
-
-    public ArrayList<Customer> getCustomers() {
-        return customers;
-    }
-
-    public ArrayList<Colour> getColours() {
-        return colours;
-    }
-
-    public ArrayList<Category> getCategories() {
-        return categories;
-    }
-
-    public ArrayList<Shoe> getShoes() {
-        return shoes;
-    }
-
-    private void loadCities() throws IOException {
-        cities = new ArrayList<>();
+    protected ArrayList<City> loadCities() throws IOException {
+        ArrayList<City> tempList = new ArrayList<>();
         p.load(new FileInputStream("src/Settings.properties"));
         try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
@@ -66,16 +34,17 @@ public class Repository {
              ResultSet rs = stmt.executeQuery("select id, name from cities")) {
 
             while(rs.next()){
-                cities.add(new City(rs.getInt("id"), rs.getString("name")));
+                tempList.add(new City(rs.getInt("id"), rs.getString("name")));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return tempList;
     }
 
-    public void loadCustomers() throws IOException {
-        customers = new ArrayList<>();
+    protected ArrayList<Customer> loadCustomers(ArrayList<City> cities) throws IOException {
+        ArrayList<Customer> tempList = new ArrayList<>();
         p.load(new FileInputStream("src/Settings.properties"));
         try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
@@ -93,16 +62,17 @@ public class Repository {
                         break;
                     }
                 }
-                customers.add(newCustomer);
+                tempList.add(newCustomer);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return tempList;
     }
 
-    private void loadColours() throws IOException {
-        colours = new ArrayList<>();
+    protected ArrayList<Colour> loadColours() throws IOException {
+        ArrayList<Colour> tempList = new ArrayList<>();
         p.load(new FileInputStream("src/Settings.properties"));
         try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
@@ -112,16 +82,17 @@ public class Repository {
              ResultSet rs = stmt.executeQuery("select id, name from colours")) {
 
             while(rs.next()){
-                colours.add(new Colour(rs.getInt("id"), rs.getString("name")));
+                tempList.add(new Colour(rs.getInt("id"), rs.getString("name")));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return tempList;
     }
 
-    private void loadCategories() throws IOException {
-        categories = new ArrayList<>();
+    protected ArrayList<Category> loadCategories() throws IOException {
+        ArrayList<Category> tempList = new ArrayList<>();
         p.load(new FileInputStream("src/Settings.properties"));
         try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
@@ -131,16 +102,17 @@ public class Repository {
              ResultSet rs = stmt.executeQuery("select id, name from categories")) {
 
             while(rs.next()){
-                categories.add(new Category(rs.getInt("id"), rs.getString("name")));
+                tempList.add(new Category(rs.getInt("id"), rs.getString("name")));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return tempList;
     }
 
-    public void loadShoes() throws IOException {
-        shoes = new ArrayList<>();
+    protected ArrayList<Shoe> loadShoes(ArrayList<Colour> colours) throws IOException {
+        ArrayList<Shoe> tempList = new ArrayList<>();
         p.load(new FileInputStream("src/Settings.properties"));
         try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),
@@ -158,16 +130,16 @@ public class Repository {
                         break;
                     }
                 }
-                shoes.add(newShoe);
+                tempList.add(newShoe);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        assignShoeCategories();
+        return tempList;
     }
 
-    private void assignShoeCategories() throws IOException {
+    protected void assignShoeCategories(ArrayList<Shoe> shoes, ArrayList<Category> categories) throws IOException {
         p.load(new FileInputStream("src/Settings.properties"));
         try (Connection con = DriverManager.getConnection(
                 p.getProperty("connectionString"),

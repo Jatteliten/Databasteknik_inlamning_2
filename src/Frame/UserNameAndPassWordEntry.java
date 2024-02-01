@@ -1,6 +1,7 @@
 package Frame;
 
 import DataBase.Customer;
+import DataBase.Data;
 import DataBase.Repository;
 
 import javax.swing.*;
@@ -44,7 +45,7 @@ public class UserNameAndPassWordEntry extends JPanel {
         confirm.addActionListener(e -> {
             try {
                 boolean customerFound = false;
-                for(Customer c: Repository.getRepository().getCustomers()){
+                for(Customer c: Data.getData().getCustomers()){
                     if(userName.getText().equalsIgnoreCase(c.getName()) &&
                     password.getText().equalsIgnoreCase(c.getPassword())){
                         ShoppingFrame.getShoppingFrame().setActiveCustomer(c);

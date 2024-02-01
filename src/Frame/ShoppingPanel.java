@@ -1,6 +1,6 @@
 package Frame;
 
-import DataBase.Repository;
+import DataBase.Data;
 import DataBase.Shoe;
 
 import javax.swing.*;
@@ -8,25 +8,30 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AddToCart extends JPanel {
-    private static AddToCart addToCart;
+public class ShoppingPanel extends JPanel {
+    private static ShoppingPanel shoppingPanel;
+    private final ArrayList<Shoe> shoesInCart = new ArrayList<>();
     private final ArrayList<JTextField> amountTextFields = new ArrayList<>();
 
-    private AddToCart(){
+    private ShoppingPanel(){
         setSize(800, 800);
         setLayout(new GridLayout(0,4));
     }
 
-    public static AddToCart getAddToCart() throws IOException {
-        if(addToCart == null){
-            addToCart = new AddToCart();
-            addToCart.initializePanel();
+    public static ShoppingPanel getAddToCart() throws IOException {
+        if(shoppingPanel == null){
+            shoppingPanel = new ShoppingPanel();
+            shoppingPanel.initializePanel();
         }
-        return addToCart;
+        return shoppingPanel;
+    }
+
+    public ArrayList<Shoe> getShoesInCart() {
+        return shoesInCart;
     }
 
     private void initializePanel() throws IOException {
-        for(Shoe s: Repository.getRepository().getShoes()){
+        for(Shoe s: Data.getData().getShoes()){
             JButton shoeButton = new JButton(s.getBrand() + " " + s.getColour().getName() + " " + s.getSize() + " " +
                     s.getPrice() + ":-");
             add(shoeButton);
@@ -40,6 +45,7 @@ public class AddToCart extends JPanel {
             minusButton.addActionListener(e -> {
                 int currentAmount = Integer.parseInt(amountTextField.getText());
                 if(currentAmount != 0) {
+                    shoesInCart.remove(s);
                     currentAmount--;
                     amountTextField.setText(String.valueOf(currentAmount));
                 }
@@ -49,6 +55,7 @@ public class AddToCart extends JPanel {
             plusButton.addActionListener(e -> {
                 int currentAmount = Integer.parseInt(amountTextField.getText());
                 if(currentAmount <= s.getStock()) {
+                    shoesInCart.add(s);
                     currentAmount++;
                     amountTextField.setText(String.valueOf(currentAmount));
                 }
@@ -59,14 +66,15 @@ public class AddToCart extends JPanel {
             add(minusButton);
             add(plusButton);
         }
-        JButton cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Empty cart");
         cancelButton.addActionListener(e ->{
             for(JTextField text: amountTextFields){
                 text.setText("0");
             }
+            shoesInCart.clear();
         });
         add(cancelButton);
-        JButton confirmButton = new JButton("Add to cart");
+        JButton confirmButton = new JButton("Place order");
         add(confirmButton);
     }
 

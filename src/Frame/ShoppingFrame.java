@@ -9,7 +9,7 @@ public class ShoppingFrame extends JFrame {
     private static ShoppingFrame shoppingFrame;
     private final ShopChoices shopChoicesPanel = ShopChoices.getShopChoices();
     private final UserNameAndPassWordEntry userNameAndPassWordEntry = UserNameAndPassWordEntry.getUserNameAndPassWordEntry();
-    private final AddToCart addToCartPanel = AddToCart.getAddToCart();
+    private final ShoppingPanel shoppingPanelPanel = ShoppingPanel.getAddToCart();
     private Customer activeCustomer;
 
     private ShoppingFrame() throws IOException {
@@ -40,7 +40,7 @@ public class ShoppingFrame extends JFrame {
         switch (panelEnum){
             case SHOPPING_CHOICES -> getContentPane().add(shopChoicesPanel);
             case USER_NAME_AND_PASSWORD_ENTRY -> getContentPane().add(userNameAndPassWordEntry);
-            case ADD_TO_CART -> getContentPane().add(addToCartPanel);
+            case ADD_TO_CART -> getContentPane().add(shoppingPanelPanel);
         }
         revalidate();
         repaint();
