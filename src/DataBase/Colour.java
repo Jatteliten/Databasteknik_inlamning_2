@@ -1,20 +1,20 @@
 package DataBase;
 
 public class Colour {
-    private final int ID;
-    private final String NAME;
+    private final int id;
+    private final String name;
 
     public Colour(int id, String name) {
-        this.ID = id;
-        this.NAME = name;
+        this.id = id;
+        this.name = name;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
-        return NAME;
+        return name;
     }
 
 }

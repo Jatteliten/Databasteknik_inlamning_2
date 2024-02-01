@@ -1,21 +1,21 @@
 package DataBase;
 
 public class Customer {
-    private final int ID;
-    private final String NAME;
+    private final int id;
+    private final String name;
     private City city;
 
     public Customer(int id, String name) {
-        this.ID = id;
-        this.NAME = name;
+        this.id = id;
+        this.name = name;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public String getNAME() {
-        return NAME;
+    public String getName() {
+        return name;
     }
 
     public City getCity() {

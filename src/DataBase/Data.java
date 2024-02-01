@@ -5,20 +5,20 @@ import java.util.ArrayList;
 
 public class Data {
     private static Data data;
-    private final ArrayList<City> CITIES;
-    private final ArrayList<Customer> CUSTOMERS;
-    private final ArrayList<Colour> COLOURS;
-    private final ArrayList<Category> CATEGORIES;
-    private final ArrayList<Shoe> SHOES;
+    private final ArrayList<City> cities;
+    private final ArrayList<Customer> customers;
+    private final ArrayList<Colour> colours;
+    private final ArrayList<Category> categories;
+    private final ArrayList<Shoe> shoes;
     private Customer activeCustomer;
 
     private Data() throws IOException {
-        CITIES = Repository.getRepository().loadCities();
-        CUSTOMERS =  Repository.getRepository().loadCustomers(CITIES);
-        COLOURS = Repository.getRepository().loadColours();
-        CATEGORIES = Repository.getRepository().loadCategories();
-        SHOES = Repository.getRepository().loadShoes(COLOURS);
-        Repository.getRepository().assignShoeCategories(SHOES, CATEGORIES);
+        cities = Repository.getRepository().loadCities();
+        customers =  Repository.getRepository().loadCustomers(cities);
+        colours = Repository.getRepository().loadColours();
+        categories = Repository.getRepository().loadCategories();
+        shoes = Repository.getRepository().loadShoes(colours);
+        Repository.getRepository().assignShoeCategories(shoes, categories);
     }
 
     public static Data getData() throws IOException {
@@ -36,24 +36,24 @@ public class Data {
         this.activeCustomer = activeCustomer;
     }
 
-    public ArrayList<City> getCITIES() {
-        return CITIES;
+    public ArrayList<City> getCities() {
+        return cities;
     }
 
-    public ArrayList<Customer> getCUSTOMERS() {
-        return CUSTOMERS;
+    public ArrayList<Customer> getCustomers() {
+        return customers;
     }
 
-    public ArrayList<Colour> getCOLOURS() {
-        return COLOURS;
+    public ArrayList<Colour> getColours() {
+        return colours;
     }
 
-    public ArrayList<Category> getCATEGORIES() {
-        return CATEGORIES;
+    public ArrayList<Category> getCategories() {
+        return categories;
     }
 
-    public ArrayList<Shoe> getSHOES() {
-        return SHOES;
+    public ArrayList<Shoe> getShoes() {
+        return shoes;
     }
 
 }

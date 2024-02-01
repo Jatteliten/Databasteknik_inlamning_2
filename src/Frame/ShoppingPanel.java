@@ -36,10 +36,10 @@ public class ShoppingPanel extends JPanel {
         add(new JLabel());
         add(new JLabel());
 
-        Data.getData().getSHOES().forEach(s -> {
-            add(createCenteredTextLabel(s.getBRAND()));
+        Data.getData().getShoes().forEach(s -> {
+            add(createCenteredTextLabel(s.getBrand()));
             add(createCenteredTextLabel(s.getColour().getName()));
-            add(createCenteredTextLabel(String.valueOf(s.getSIZE())));
+            add(createCenteredTextLabel(String.valueOf(s.getSize())));
 
             JLabel amountLabel = createCenteredTextLabel("0");
             AMOUNT_LABELS.add(amountLabel);
@@ -115,9 +115,9 @@ public class ShoppingPanel extends JPanel {
         StringBuilder order = new StringBuilder("Order placed!\nItems in order:\n");
         int totalPrice = 0;
         for(Shoe s: SHOES_IN_CART){
-            order.append(s.getBRAND()).append(" |Size: ").append(s.getSIZE()).append
-                    (" |Colour: ").append(s.getColour().getName()).append(" |Price: ").append(s.getPRICE()).append(":-\n");
-            totalPrice += s.getPRICE();
+            order.append(s.getBrand()).append(" |Size: ").append(s.getSize()).append
+                    (" |Colour: ").append(s.getColour().getName()).append(" |Price: ").append(s.getPrice()).append(":-\n");
+            totalPrice += s.getPrice();
         }
         order.append("Total price: ").append(totalPrice).append(":-");
         JOptionPane.showMessageDialog(null, order);

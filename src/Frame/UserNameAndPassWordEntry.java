@@ -54,8 +54,8 @@ public class UserNameAndPassWordEntry extends JPanel {
     private void checkCredentials() {
         try {
             boolean customerFound = false;
-            for(Customer c: Data.getData().getCUSTOMERS()){
-                if(userName.getText().equalsIgnoreCase(c.getNAME()) &&
+            for(Customer c: Data.getData().getCustomers()){
+                if(userName.getText().equalsIgnoreCase(c.getName()) &&
                         Repository.getRepository().findPassword(c, password.getText())){
                     Data.getData().setActiveCustomer(c);
                     ShoppingFrame.getShoppingFrame().switchPanel(Panels.ADD_TO_CART);

@@ -59,7 +59,7 @@ public class Repository {
             while(rs.next()){
                 Customer newCustomer = new Customer(rs.getInt("id"), rs.getString("name"));
                 for(City c: cities){
-                    if(c.getID() == rs.getInt("cityId")){
+                    if(c.getId() == rs.getInt("cityId")){
                         newCustomer.setCity(c);
                         break;
                     }
@@ -127,7 +127,7 @@ public class Repository {
                 Shoe newShoe = new Shoe(rs.getInt("id"), rs.getString("brand"),
                         rs.getInt("price"), rs.getInt("size"), rs.getInt("stock"));
                 for(Colour c: colours){
-                    if(c.getID() == rs.getInt("colourId")){
+                    if(c.getId() == rs.getInt("colourId")){
                         newShoe.setColour(c);
                         break;
                     }
@@ -153,9 +153,9 @@ public class Repository {
             while(rs.next()){
                 boolean categoryFound = false;
                 for(Shoe s: shoes){
-                    if (s.getID() == rs.getInt("shoeID")){
+                    if (s.getId() == rs.getInt("shoeID")){
                         for(Category c: categories){
-                            if(c.getID() == rs.getInt("categoryID")){
+                            if(c.getId() == rs.getInt("categoryID")){
                                 s.addToCategories(c);
                                 categoryFound = true;
                                 break;
@@ -180,7 +180,7 @@ public class Repository {
                 P.getProperty("name"),
                 P.getProperty("password"));
              Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("select customers.password from customers where id = " + customer.getID())) {
+             ResultSet rs = stmt.executeQuery("select customers.password from customers where id = " + customer.getId())) {
 
             if(rs.next()){
                 return rs.getString("password").equals(password);
@@ -200,12 +200,12 @@ public class Repository {
                 P.getProperty("name"),
                 P.getProperty("password"))){
             CallableStatement stmt = con.prepareCall("CALL addToCart(?, ?, ?)");
-            stmt.setInt(1, customer.getID());
+            stmt.setInt(1, customer.getId());
             stmt.registerOutParameter(2, Types.INTEGER);
             if(orderNumber != NULL_ORDER) {
                 stmt.setInt(2, orderNumber);
             }
-            stmt.setInt(3, shoe.getID());
+            stmt.setInt(3, shoe.getId());
             stmt.execute();
             orderNumberOut = stmt.getInt(2);
         } catch (SQLException e) {
