@@ -1,7 +1,5 @@
 package Frame;
 
-import DataBase.Customer;
-
 import javax.swing.*;
 import java.io.IOException;
 
@@ -29,9 +27,9 @@ public class ShoppingFrame extends JFrame {
     public void switchPanel(Panels panelEnum){
         getContentPane().removeAll();
         switch (panelEnum){
-            case SHOPPING_CHOICES -> getContentPane().add(shopChoicesPanel);
-            case USER_NAME_AND_PASSWORD_ENTRY -> getContentPane().add(userNameAndPassWordEntry);
-            case ADD_TO_CART -> getContentPane().add(shoppingPanelPanel);
+            case SHOPPING_CHOICES -> add(shopChoicesPanel);
+            case USER_NAME_AND_PASSWORD_ENTRY -> add(userNameAndPassWordEntry);
+            case ADD_TO_CART -> add(shoppingPanelPanel);
         }
         pack();
         revalidate();

@@ -11,12 +11,13 @@ import java.util.ArrayList;
 
 public class ShoppingPanel extends JPanel {
     private static ShoppingPanel shoppingPanel;
-    private final ArrayList<Shoe> shoesInCart = new ArrayList<>();
-    private final ArrayList<JTextField> amountTextFields = new ArrayList<>();
+    private final int NULL_ORDER = -1;
+    private final ArrayList<Shoe> SHOES_IN_CART = new ArrayList<>();
+    private final ArrayList<JLabel> AMOUNT_LABELS = new ArrayList<>();
+    int orderNumber = NULL_ORDER;
 
     private ShoppingPanel(){
-        setSize(800, 800);
-        setLayout(new GridLayout(0,4));
+        setLayout(new GridLayout(0,6));
     }
 
     public static ShoppingPanel getAddToCart() throws IOException {
@@ -28,86 +29,95 @@ public class ShoppingPanel extends JPanel {
     }
 
     private void initializePanel() throws IOException {
-        for(Shoe s: Data.getData().getShoes()){
-            JTextField shoeInformation = new JTextField(s.getBrand() + " " + s.getColour().getName() + " " + s.getSize() + " " +
-                    s.getPrice() + ":-");
-            shoeInformation.setEditable(false);
-            add(shoeInformation);
+        add(createUnderScoredTextLabel("Brand:"));
+        add(createUnderScoredTextLabel("Colour:"));
+        add(createUnderScoredTextLabel("Size:"));
+        add(createUnderScoredTextLabel("In cart:"));
+        add(new JLabel());
+        add(new JLabel());
 
-            JTextField amountTextField = new JTextField("0");
-            amountTextField.setHorizontalAlignment(JTextField.CENTER);
-            amountTextField.setEditable(false);
-            amountTextFields.add(amountTextField);
+        Data.getData().getSHOES().forEach(s -> {
+            add(createCenteredTextLabel(s.getBRAND()));
+            add(createCenteredTextLabel(s.getColour().getName()));
+            add(createCenteredTextLabel(String.valueOf(s.getSIZE())));
+
+            JLabel amountLabel = createCenteredTextLabel("0");
+            AMOUNT_LABELS.add(amountLabel);
 
             JButton minusButton = new JButton("-");
-            minusButton.addActionListener(e -> subtractShoe(s, amountTextField));
+            minusButton.addActionListener(e -> modifyShoeAmount(s, amountLabel, false));
 
             JButton plusButton = new JButton("+");
-            plusButton.addActionListener(e -> addShoe(s, amountTextField));
+            plusButton.addActionListener(e -> modifyShoeAmount(s, amountLabel, true));
 
-
-            add(amountTextField);
+            add(amountLabel);
             add(minusButton);
             add(plusButton);
-        }
-        JButton cancelButton = new JButton("Empty cart");
-        cancelButton.addActionListener(e -> clearShoesFromList());
-        add(cancelButton);
-        JButton confirmButton = new JButton("Place order");
-        confirmButton.addActionListener(e -> orderShoes());
-        add(confirmButton);
+        });
+
+        JButton emptyCartButton = new JButton("Empty cart");
+        emptyCartButton.addActionListener(e -> clearShoesFromList());
+        add(emptyCartButton);
+
+        JButton placeOrderButton = new JButton("Place order");
+        placeOrderButton.addActionListener(e -> orderShoes());
+        add(placeOrderButton);
     }
 
-    private void addShoe(Shoe s, JTextField amountTextField) {
+    private JLabel createUnderScoredTextLabel(String text){
+        JLabel tempLabel = new JLabel("<HTML><U><center>"+text+"</center></U></HTML>");
+        tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return tempLabel;
+    }
+
+    private JLabel createCenteredTextLabel(String text){
+        JLabel tempLabel = new JLabel(text);
+        tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return tempLabel;
+    }
+
+    private void modifyShoeAmount(Shoe s, JLabel amountTextField, boolean additive) {
         int currentAmount = Integer.parseInt(amountTextField.getText());
         if(currentAmount <= s.getStock()) {
-            shoesInCart.add(s);
-            currentAmount++;
-            amountTextField.setText(String.valueOf(currentAmount));
-        }
-    }
-
-    private void subtractShoe(Shoe s, JTextField amountTextField) {
-        int currentAmount = Integer.parseInt(amountTextField.getText());
-        if(currentAmount != 0) {
-            shoesInCart.remove(s);
-            currentAmount--;
+            if(additive) {
+                SHOES_IN_CART.add(s);
+                currentAmount++;
+            }else{
+                if(currentAmount != 0) {
+                    SHOES_IN_CART.remove(s);
+                    currentAmount--;
+                }
+            }
             amountTextField.setText(String.valueOf(currentAmount));
         }
     }
 
     private void clearShoesFromList() {
-        for(JTextField text: amountTextFields){
-            text.setText("0");
-        }
-        shoesInCart.clear();
+        AMOUNT_LABELS.forEach(l -> l.setText("0"));
+        SHOES_IN_CART.clear();
     }
 
     private void orderShoes() {
-        int orderNumber = 0;
-        for(int i = 0; i < shoesInCart.size(); i++){
+        SHOES_IN_CART.forEach(shoe -> {
             try {
-                if(i == 0){
-                    orderNumber = Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(),
-                            -1, shoesInCart.get(i));
-                }else{
-                    Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(), orderNumber, shoesInCart.get(i));
-                }
+                orderNumber = Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(),
+                        orderNumber, shoe);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        }
+        });
         displayPurchase();
         clearShoesFromList();
+        orderNumber = NULL_ORDER;
     }
 
     private void displayPurchase(){
         StringBuilder order = new StringBuilder("Order placed!\nItems in order:\n");
         int totalPrice = 0;
-        for(Shoe s: shoesInCart){
-            order.append(s.getBrand()).append(" |Size: ").append(s.getSize()).append
-                    (" |Colour: ").append(s.getColour().getName()).append(" |Price: ").append(s.getPrice()).append(":-\n");
-            totalPrice += s.getPrice();
+        for(Shoe s: SHOES_IN_CART){
+            order.append(s.getBRAND()).append(" |Size: ").append(s.getSIZE()).append
+                    (" |Colour: ").append(s.getColour().getName()).append(" |Price: ").append(s.getPRICE()).append(":-\n");
+            totalPrice += s.getPRICE();
         }
         order.append("Total price: ").append(totalPrice).append(":-");
         JOptionPane.showMessageDialog(null, order);

@@ -3,32 +3,32 @@ package DataBase;
 import java.util.ArrayList;
 
 public class Shoe {
-    int id;
-    String brand;
-    int price;
-    Colour colour;
-    int size;
-    int stock;
-    ArrayList<Category> categories = new ArrayList<>();
+    private final int ID;
+    private final String BRAND;
+    private final int PRICE;
+    private final int SIZE;
+    private final ArrayList<Category> CATEGORIES = new ArrayList<>();
+    private Colour colour;
+    private int stock;
 
     public Shoe(int id, String brand, int price, int size, int stock) {
-        this.id = id;
-        this.brand = brand;
-        this.price = price;
-        this.size = size;
+        this.ID = id;
+        this.BRAND = brand;
+        this.PRICE = price;
+        this.SIZE = size;
         this.stock = stock;
     }
 
-    public int getId() {
-        return id;
+    public int getID() {
+        return ID;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getBRAND() {
+        return BRAND;
     }
 
-    public int getPrice() {
-        return price;
+    public int getPRICE() {
+        return PRICE;
     }
 
     public Colour getColour() {
@@ -39,8 +39,8 @@ public class Shoe {
         this.colour = colour;
     }
 
-    public int getSize() {
-        return size;
+    public int getSIZE() {
+        return SIZE;
     }
 
     public int getStock() {
@@ -50,11 +50,11 @@ public class Shoe {
     public void setStock(int stock) {
         this.stock = stock;
     }
-    public ArrayList<Category> getCategories() {
-        return categories;
+    public ArrayList<Category> getCATEGORIES() {
+        return CATEGORIES;
     }
 
     public void addToCategories(Category c){
-        categories.add(c);
+        CATEGORIES.add(c);
     }
 }

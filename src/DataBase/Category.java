@@ -1,19 +1,19 @@
 package DataBase;
 
 public class Category {
-    int id;
-    String name;
+    private final int ID;
+    private final String NAME;
 
     public Category(int id, String name) {
-        this.id = id;
-        this.name = name;
+        this.ID = id;
+        this.NAME = name;
     }
 
-    public int getId() {
-        return id;
+    public int getID() {
+        return ID;
     }
 
-    public String getName() {
-        return name;
+    public String getNAME() {
+        return NAME;
     }
 }
