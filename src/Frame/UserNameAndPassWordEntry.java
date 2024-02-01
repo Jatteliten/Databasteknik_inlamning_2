@@ -16,7 +16,7 @@ public class UserNameAndPassWordEntry extends JPanel {
     JButton confirm = new JButton("Confirm");
 
     private UserNameAndPassWordEntry(){
-        setLayout(new GridLayout(2,2));
+        setLayout(new FlowLayout());
     }
 
     public static UserNameAndPassWordEntry getUserNameAndPassWordEntry(){
@@ -29,9 +29,11 @@ public class UserNameAndPassWordEntry extends JPanel {
 
     private void initializePanel(){
         userName.setForeground(Color.GRAY);
+        userName.setPreferredSize(new Dimension(200, 40));
         add(userName);
-        password.setForeground(Color.GRAY);
 
+        password.setForeground(Color.GRAY);
+        password.setPreferredSize(new Dimension(200, 40));
         add(password);
         cancel.addActionListener(e -> {
             try {

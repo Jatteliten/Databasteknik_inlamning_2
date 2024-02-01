@@ -8,8 +8,7 @@ public class ShopChoices extends JPanel {
     private static ShopChoices shopChoices;
     private final JButton addToCart = new JButton("Add product to order");
     private ShopChoices(){
-        setSize(800, 800);
-        setLayout(new GridLayout(1,1));
+        setLayout(new FlowLayout());
     }
 
     public static ShopChoices getShopChoices(){
@@ -21,6 +20,7 @@ public class ShopChoices extends JPanel {
     }
 
     private void initializeButtons(){
+        addToCart.setPreferredSize(new Dimension(200,50));
         addToCart.addActionListener(e -> {
             try {
                 ShoppingFrame.getShoppingFrame().switchPanel(Panels.USER_NAME_AND_PASSWORD_ENTRY);
@@ -28,6 +28,6 @@ public class ShopChoices extends JPanel {
                 throw new RuntimeException(ex);
             }
         });
-        shopChoices.add(addToCart);
+        add(addToCart);
     }
 }

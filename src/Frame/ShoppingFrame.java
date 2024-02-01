@@ -12,10 +12,10 @@ public class ShoppingFrame extends JFrame {
     private final ShoppingPanel shoppingPanelPanel = ShoppingPanel.getAddToCart();
 
     private ShoppingFrame() throws IOException {
-        setSize(800, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         add(shopChoicesPanel);
+        pack();
         setVisible(true);
     }
 
@@ -33,6 +33,7 @@ public class ShoppingFrame extends JFrame {
             case USER_NAME_AND_PASSWORD_ENTRY -> getContentPane().add(userNameAndPassWordEntry);
             case ADD_TO_CART -> getContentPane().add(shoppingPanelPanel);
         }
+        pack();
         revalidate();
         repaint();
     }

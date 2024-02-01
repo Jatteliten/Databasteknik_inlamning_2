@@ -29,9 +29,10 @@ public class ShoppingPanel extends JPanel {
 
     private void initializePanel() throws IOException {
         for(Shoe s: Data.getData().getShoes()){
-            JButton shoeButton = new JButton(s.getBrand() + " " + s.getColour().getName() + " " + s.getSize() + " " +
+            JTextField shoeInformation = new JTextField(s.getBrand() + " " + s.getColour().getName() + " " + s.getSize() + " " +
                     s.getPrice() + ":-");
-            add(shoeButton);
+            shoeInformation.setEditable(false);
+            add(shoeInformation);
 
             JTextField amountTextField = new JTextField("0");
             amountTextField.setHorizontalAlignment(JTextField.CENTER);
