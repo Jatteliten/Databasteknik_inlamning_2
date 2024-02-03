@@ -14,8 +14,12 @@ import java.util.Properties;
 
 public class Repository {
     private static Repository repository;
-    private final Properties P = new Properties();
     private static final int NULL_ORDER = -1;
+    private static final String PROPERTIES_FILE_PATH = "src/Settings.properties";
+    private static final String PROPERTIES_CONNECTION_STRING = "connectionString";
+    private static final String PROPERTIES_USER_NAME = "name";
+    private static final String PROPERTIES_PASSWORD = "password";
+    private final Properties P = new Properties();
 
     private Repository() {}
 
@@ -28,11 +32,11 @@ public class Repository {
 
     protected ArrayList<City> loadCities() throws IOException {
         ArrayList<City> tempList = new ArrayList<>();
-        P.load(new FileInputStream("src/Settings.properties"));
+        P.load(new FileInputStream(PROPERTIES_FILE_PATH));
         try (Connection con = DriverManager.getConnection(
-                P.getProperty("connectionString"),
-                P.getProperty("name"),
-                P.getProperty("password"));
+                P.getProperty(PROPERTIES_CONNECTION_STRING),
+                P.getProperty(PROPERTIES_USER_NAME),
+                P.getProperty(PROPERTIES_PASSWORD));
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("select id, name from cities")) {
 
@@ -48,11 +52,11 @@ public class Repository {
 
     protected ArrayList<Customer> loadCustomers(ArrayList<City> cities) throws IOException {
         ArrayList<Customer> tempList = new ArrayList<>();
-        P.load(new FileInputStream("src/Settings.properties"));
+        P.load(new FileInputStream(PROPERTIES_FILE_PATH));
         try (Connection con = DriverManager.getConnection(
-                P.getProperty("connectionString"),
-                P.getProperty("name"),
-                P.getProperty("password"));
+                P.getProperty(PROPERTIES_CONNECTION_STRING),
+                P.getProperty(PROPERTIES_USER_NAME),
+                P.getProperty(PROPERTIES_PASSWORD));
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("select id, name, cityId from customers")) {
 
@@ -75,11 +79,11 @@ public class Repository {
 
     protected ArrayList<Colour> loadColours() throws IOException {
         ArrayList<Colour> tempList = new ArrayList<>();
-        P.load(new FileInputStream("src/Settings.properties"));
+        P.load(new FileInputStream(PROPERTIES_FILE_PATH));
         try (Connection con = DriverManager.getConnection(
-                P.getProperty("connectionString"),
-                P.getProperty("name"),
-                P.getProperty("password"));
+                P.getProperty(PROPERTIES_CONNECTION_STRING),
+                P.getProperty(PROPERTIES_USER_NAME),
+                P.getProperty(PROPERTIES_PASSWORD));
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("select id, name from colours")) {
 
@@ -95,11 +99,11 @@ public class Repository {
 
     protected ArrayList<Category> loadCategories() throws IOException {
         ArrayList<Category> tempList = new ArrayList<>();
-        P.load(new FileInputStream("src/Settings.properties"));
+        P.load(new FileInputStream(PROPERTIES_FILE_PATH));
         try (Connection con = DriverManager.getConnection(
-                P.getProperty("connectionString"),
-                P.getProperty("name"),
-                P.getProperty("password"));
+                P.getProperty(PROPERTIES_CONNECTION_STRING),
+                P.getProperty(PROPERTIES_USER_NAME),
+                P.getProperty(PROPERTIES_PASSWORD));
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("select id, name from categories")) {
 
@@ -115,11 +119,11 @@ public class Repository {
 
     protected ArrayList<Shoe> loadShoes(ArrayList<Colour> colours) throws IOException {
         ArrayList<Shoe> tempList = new ArrayList<>();
-        P.load(new FileInputStream("src/Settings.properties"));
+        P.load(new FileInputStream(PROPERTIES_FILE_PATH));
         try (Connection con = DriverManager.getConnection(
-                P.getProperty("connectionString"),
-                P.getProperty("name"),
-                P.getProperty("password"));
+                P.getProperty(PROPERTIES_CONNECTION_STRING),
+                P.getProperty(PROPERTIES_USER_NAME),
+                P.getProperty(PROPERTIES_PASSWORD));
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("select id, brand, price, colourID, size, stock from shoes")) {
 
@@ -142,11 +146,11 @@ public class Repository {
     }
 
     protected void assignShoeCategories(ArrayList<Shoe> shoes, ArrayList<Category> categories) throws IOException {
-        P.load(new FileInputStream("src/Settings.properties"));
+        P.load(new FileInputStream(PROPERTIES_FILE_PATH));
         try (Connection con = DriverManager.getConnection(
-                P.getProperty("connectionString"),
-                P.getProperty("name"),
-                P.getProperty("password"));
+                P.getProperty(PROPERTIES_CONNECTION_STRING),
+                P.getProperty(PROPERTIES_USER_NAME),
+                P.getProperty(PROPERTIES_PASSWORD));
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("select shoeID, categoryID from shoecategory")) {
 
@@ -174,11 +178,11 @@ public class Repository {
     }
 
     public boolean findPassword(Customer customer, String password) throws IOException {
-        P.load(new FileInputStream("src/Settings.properties"));
+        P.load(new FileInputStream(PROPERTIES_FILE_PATH));
         try (Connection con = DriverManager.getConnection(
-                P.getProperty("connectionString"),
-                P.getProperty("name"),
-                P.getProperty("password"));
+                P.getProperty(PROPERTIES_CONNECTION_STRING),
+                P.getProperty(PROPERTIES_USER_NAME),
+                P.getProperty(PROPERTIES_PASSWORD));
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("select customers.password from customers where id = " + customer.getId())) {
 
@@ -193,12 +197,12 @@ public class Repository {
     }
 
     public int placeOrder(Customer customer, int orderNumber, Shoe shoe) throws IOException{
-        P.load(new FileInputStream("src/Settings.properties"));
+        P.load(new FileInputStream(PROPERTIES_FILE_PATH));
         int orderNumberOut;
         try(Connection con = DriverManager.getConnection(
-                P.getProperty("connectionString"),
-                P.getProperty("name"),
-                P.getProperty("password"))){
+                P.getProperty(PROPERTIES_CONNECTION_STRING),
+                P.getProperty(PROPERTIES_USER_NAME),
+                P.getProperty(PROPERTIES_PASSWORD))){
             CallableStatement stmt = con.prepareCall("CALL addToCart(?, ?, ?)");
             stmt.setInt(1, customer.getId());
             stmt.registerOutParameter(2, Types.INTEGER);
