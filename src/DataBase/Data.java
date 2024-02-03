@@ -9,7 +9,7 @@ public class Data {
     private final ArrayList<Customer> customers;
     private final ArrayList<Colour> colours;
     private final ArrayList<Category> categories;
-    private final ArrayList<Shoe> shoes;
+    private ArrayList<Shoe> shoes;
     private Customer activeCustomer;
 
     private Data() throws IOException {
@@ -54,6 +54,11 @@ public class Data {
 
     public ArrayList<Shoe> getShoes() {
         return shoes;
+    }
+
+    public void reloadShoes() throws IOException {
+        shoes.clear();
+        shoes = Repository.getRepository().loadShoes(colours);
     }
 
 }

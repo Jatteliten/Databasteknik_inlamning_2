@@ -63,13 +63,21 @@ public class ShoppingPanel extends JPanel {
         emptyCartButton.addActionListener(e -> clearShoesFromList());
         buttonsPanel.add(emptyCartButton);
 
-        placeOrderButton.addActionListener(e -> orderShoes());
+        placeOrderButton.addActionListener(e -> {
+            try {
+                orderShoes();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         buttonsPanel.add(placeOrderButton);
 
         fillShoesPanel();
     }
 
     private void fillShoesPanel() throws IOException {
+        shoesPanel.removeAll();
+        amountLabels.clear();
         List<Shoe> shoesToDisplay = Data.getData().getShoes();
 
         shoesToDisplay = filterShoesDisplay(shoesToDisplay);
@@ -94,6 +102,10 @@ public class ShoppingPanel extends JPanel {
                 shoesPanel.add(plusButton);
             }
         });
+        clearShoesFromList();
+        shoesPanel.revalidate();
+        shoesPanel.repaint();
+        ShoppingFrame.getShoppingFrame().pack();
     }
 
     private List<Shoe> filterShoesDisplay(List<Shoe> shoesToDisplay) {
@@ -121,9 +133,10 @@ public class ShoppingPanel extends JPanel {
     private JComboBox<String> createCategoryComboBox(String categoryName, List<?> categories) {
         JComboBox<String> tempBox = new JComboBox<>();
         tempBox.addItem(categoryName);
+
         if (checkIfItemIsNumber(categories.get(0).toString())) {
             List<Integer> integerList = new ArrayList<>();
-            categories.forEach(e -> integerList.add((Integer) e));
+            categories.forEach(size -> integerList.add((Integer) size));
             Collections.sort(integerList);
             integerList.forEach(size -> tempBox.addItem(size.toString()));
         } else {
@@ -132,12 +145,7 @@ public class ShoppingPanel extends JPanel {
 
         tempBox.addActionListener(e -> {
             try {
-                shoesPanel.removeAll();
                 fillShoesPanel();
-                shoesInCart.clear();
-                ShoppingFrame.getShoppingFrame().pack();
-                shoesPanel.revalidate();
-                shoesPanel.repaint();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -163,10 +171,11 @@ public class ShoppingPanel extends JPanel {
 
     private void modifyShoeAmount(Shoe s, JLabel amountTextField, boolean additive) {
         int currentAmount = Integer.parseInt(amountTextField.getText());
-        if(currentAmount <= s.getStock()) {
             if(additive) {
-                shoesInCart.add(s);
-                currentAmount++;
+                if(currentAmount < s.getStock()) {
+                    shoesInCart.add(s);
+                    currentAmount++;
+                }
             }else{
                 if(currentAmount != 0) {
                     shoesInCart.remove(s);
@@ -174,7 +183,6 @@ public class ShoppingPanel extends JPanel {
                 }
             }
             amountTextField.setText(String.valueOf(currentAmount));
-        }
     }
 
     private void clearShoesFromList() {
@@ -182,34 +190,36 @@ public class ShoppingPanel extends JPanel {
         shoesInCart.clear();
     }
 
-    private void orderShoes() {
-        shoesInCart.forEach(shoe -> {
-            try {
-                orderNumber = Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(),
-                        orderNumber, shoe);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        displayPurchase();
-        orderNumber = NULL_ORDER;
-    }
-
-    private void displayPurchase(){
+    private void orderShoes() throws IOException {
         if(!shoesInCart.isEmpty()) {
-            StringBuilder order = new StringBuilder("Order placed!\n\nItems in order:\n");
-            int totalPrice = 0;
-            for (Shoe s : shoesInCart) {
-                order.append(s.getBrand()).append(" |Size: ").append(s.getSize()).append
-                        (" |Colour: ").append(s.getColour().name()).append(" |Price: ").append(s.getPrice()).append(":-\n");
-                totalPrice += s.getPrice();
-            }
-            order.append("Total price: ").append(totalPrice).append(":-");
-            JOptionPane.showMessageDialog(null, order);
-            clearShoesFromList();
+            shoesInCart.forEach(shoe -> {
+                try {
+                    orderNumber = Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(),
+                            orderNumber, shoe);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            displayPurchase();
         }else{
             JOptionPane.showMessageDialog(null, "Your cart is empty!");
         }
+    }
+
+    private void displayPurchase() throws IOException {
+        StringBuilder order = new StringBuilder("Order placed!\n\nItems in order:\n");
+        int totalPrice = 0;
+        for (Shoe s : shoesInCart) {
+            order.append(s.getBrand()).append(" |Size: ").append(s.getSize()).append
+                    (" |Colour: ").append(s.getColour().name()).append(" |Price: ").append(s.getPrice()).append(":-\n");
+            totalPrice += s.getPrice();
+        }
+        order.append("Total price: ").append(totalPrice).append(":-");
+        JOptionPane.showMessageDialog(null, order);
+
+        Data.getData().reloadShoes();
+        fillShoesPanel();
+        orderNumber = NULL_ORDER;
     }
 
 }
