@@ -31,10 +31,10 @@ public class ShoppingFrame extends JFrame {
             case USER_NAME_AND_PASSWORD_ENTRY -> add(userNameAndPassWordEntry);
             case ADD_TO_CART -> { add(shoppingPanel); shoppingPanel.initializeShoppingPanel(); }
         }
-        packFrame();
+        refreshFrame();
     }
 
-    public void packFrame(){
+    public void refreshFrame(){
         pack();
         revalidate();
         repaint();

@@ -102,7 +102,7 @@ public class ShoppingPanel extends JPanel {
             }
         });
         clearShoesFromList();
-        ShoppingFrame.getShoppingFrame().packFrame();
+        ShoppingFrame.getShoppingFrame().refreshFrame();
     }
 
     private List<Shoe> filterShoesDisplay(List<Shoe> shoesToDisplay) {

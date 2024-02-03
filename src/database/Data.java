@@ -12,7 +12,7 @@ public class Data {
     private ArrayList<Shoe> shoes;
     private Customer activeCustomer;
 
-    private Data() throws IOException {
+    private Data() {
         cities = Repository.getRepository().loadCities();
         customers =  Repository.getRepository().loadCustomers(cities);
         colours = Repository.getRepository().loadColours();
@@ -54,7 +54,7 @@ public class Data {
         return shoes;
     }
 
-    public void reloadShoes() throws IOException {
+    public void reloadShoes() {
         shoes.clear();
         shoes = Repository.getRepository().loadShoes(colours);
     }
