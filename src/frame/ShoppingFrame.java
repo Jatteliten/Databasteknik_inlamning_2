@@ -10,6 +10,7 @@ public class ShoppingFrame extends JFrame {
     private final ShoppingPanel shoppingPanel = ShoppingPanel.getShoppingPanel();
 
     private ShoppingFrame() throws IOException {
+        setTitle("Shoe store");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         switchPanel(Panels.SHOPPING_CHOICES);
