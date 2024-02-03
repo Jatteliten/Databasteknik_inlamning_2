@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public class ShoppingFrame extends JFrame {
     private static ShoppingFrame shoppingFrame;
-    private final ShopChoices shopChoicesPanel = ShopChoices.getShopChoices();
+    private final ShopChoicesPanel shopChoicesPanel = ShopChoicesPanel.getShopChoices();
     private final UserNameAndPassWordEntry userNameAndPassWordEntry = UserNameAndPassWordEntry.getUserNameAndPassWordEntry();
-    private final ShoppingPanel shoppingPanelPanel = ShoppingPanel.getShoppingPanel();
+    private final ShoppingPanel shoppingPanel = ShoppingPanel.getShoppingPanel();
 
     private ShoppingFrame() throws IOException {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -23,13 +23,17 @@ public class ShoppingFrame extends JFrame {
         return shoppingFrame;
     }
 
-    public void switchPanel(Panels panelEnum){
+    public void switchPanel(Panels panelEnum) throws IOException {
         getContentPane().removeAll();
         switch (panelEnum){
             case SHOPPING_CHOICES -> add(shopChoicesPanel);
             case USER_NAME_AND_PASSWORD_ENTRY -> add(userNameAndPassWordEntry);
-            case ADD_TO_CART -> add(shoppingPanelPanel);
+            case ADD_TO_CART -> { add(shoppingPanel); shoppingPanel.initializeShoppingPanel(); }
         }
+        packFrame();
+    }
+
+    public void packFrame(){
         pack();
         revalidate();
         repaint();

@@ -4,30 +4,30 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class ShopChoices extends JPanel {
-    private static ShopChoices shopChoices;
-    private final JButton addToCart = new JButton("Add product to order");
-    private ShopChoices(){
+public class ShopChoicesPanel extends JPanel {
+    private static ShopChoicesPanel shopChoices;
+    private final JButton login = new JButton("Log in");
+    private ShopChoicesPanel(){
         setLayout(new FlowLayout());
     }
 
-    public static ShopChoices getShopChoices(){
+    public static ShopChoicesPanel getShopChoices(){
         if (shopChoices == null){
-            shopChoices = new ShopChoices();
+            shopChoices = new ShopChoicesPanel();
             shopChoices.initializeButtons();
         }
         return shopChoices;
     }
 
     private void initializeButtons(){
-        addToCart.setPreferredSize(new Dimension(200,50));
-        addToCart.addActionListener(e -> {
+        login.setPreferredSize(new Dimension(200,50));
+        login.addActionListener(e -> {
             try {
                 ShoppingFrame.getShoppingFrame().switchPanel(Panels.USER_NAME_AND_PASSWORD_ENTRY);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
-        add(addToCart);
+        add(login);
     }
 }

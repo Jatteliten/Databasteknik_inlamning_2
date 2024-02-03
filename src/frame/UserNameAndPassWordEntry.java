@@ -6,6 +6,7 @@ import database.Repository;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
 
 public class UserNameAndPassWordEntry extends JPanel {
@@ -28,14 +29,10 @@ public class UserNameAndPassWordEntry extends JPanel {
     }
 
     private void initializePanel(){
-        userName.setForeground(Color.GRAY);
-        userName.setPreferredSize(new Dimension(200, 40));
-        userName.addActionListener(e -> checkCredentials());
+        setTextFieldDesignAndListeners(userName.getText(), userName);
         add(userName);
 
-        password.setForeground(Color.GRAY);
-        password.setPreferredSize(new Dimension(200, 40));
-        password.addActionListener(e -> checkCredentials());
+        setTextFieldDesignAndListeners(password.getText(), password);
         add(password);
 
         cancel.addActionListener(e -> {
@@ -49,6 +46,21 @@ public class UserNameAndPassWordEntry extends JPanel {
 
         confirm.addActionListener(e -> checkCredentials());
         add(confirm);
+    }
+
+    private void setTextFieldDesignAndListeners(String textFieldName, JTextField textField){
+        textField.setForeground(Color.GRAY);
+        textField.setPreferredSize(new Dimension(200, 40));
+        textField.addActionListener(e -> checkCredentials());
+        textField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(textField.getText().equals(textFieldName)){
+                    textField.setText("");
+                    textField.setForeground(Color.BLACK);
+                }
+            }
+        });
     }
 
     private void checkCredentials() {
@@ -66,6 +78,8 @@ public class UserNameAndPassWordEntry extends JPanel {
             if(!customerFound){
                 userName.setText("name");
                 password.setText("password");
+                userName.setForeground(Color.GRAY);
+                password.setForeground(Color.GRAY);
                 JOptionPane.showMessageDialog(null, "Customer and password does not match");
             }
         } catch (IOException ex) {

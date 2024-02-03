@@ -44,12 +44,11 @@ public class ShoppingPanel extends JPanel {
     public static ShoppingPanel getShoppingPanel() throws IOException {
         if(shoppingPanel == null){
             shoppingPanel = new ShoppingPanel();
-            shoppingPanel.initializePanel();
         }
         return shoppingPanel;
     }
 
-    private void initializePanel() throws IOException {
+    public void initializeShoppingPanel() throws IOException {
         add(boxPanel, BorderLayout.NORTH);
         boxPanel.add(brandBox);
         boxPanel.add(colourBox);
@@ -103,9 +102,7 @@ public class ShoppingPanel extends JPanel {
             }
         });
         clearShoesFromList();
-        shoesPanel.revalidate();
-        shoesPanel.repaint();
-        ShoppingFrame.getShoppingFrame().pack();
+        ShoppingFrame.getShoppingFrame().packFrame();
     }
 
     private List<Shoe> filterShoesDisplay(List<Shoe> shoesToDisplay) {
