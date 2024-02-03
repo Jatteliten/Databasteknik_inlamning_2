@@ -156,21 +156,12 @@ public class Repository {
              ResultSet rs = stmt.executeQuery("select shoeID, categoryID from shoecategory")) {
 
             while(rs.next()){
-                for(Shoe s: shoes){
-                    boolean found = false;
-                    if(s.getId() == rs.getInt("shoeID")){
-                        for(Category c: categories){
-                            if(c.id() == rs.getInt("categoryID")){
-                                found = true;
-                                s.addToCategories(c);
-                                break;
-                            }
-                        }
-                        if(found){
-                            break;
-                        }
-                    }
-                }
+                int shoeIDCheck = rs.getInt("shoeID");
+                int categoryIdCheck = rs.getInt("categoryID");
+
+                shoes.stream().filter(s -> s.getId() == shoeIDCheck).findFirst()
+                        .ifPresent(s -> categories.stream().filter(c -> c.id() == categoryIdCheck)
+                                .findFirst().ifPresent(s::addToCategories));
             }
 
         } catch (SQLException e) {
