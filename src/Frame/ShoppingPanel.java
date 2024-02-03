@@ -75,22 +75,24 @@ public class ShoppingPanel extends JPanel {
         shoesToDisplay = filterShoesDisplay(shoesToDisplay);
 
         shoesToDisplay.forEach(s -> {
-            shoesPanel.add(createCenteredTextLabel(s.getBrand()));
-            shoesPanel.add(createCenteredTextLabel(s.getColour().name()));
-            shoesPanel.add(createCenteredTextLabel(String.valueOf(s.getSize())));
+            if(s.getStock() != 0) {
+                shoesPanel.add(createCenteredTextLabel(s.getBrand()));
+                shoesPanel.add(createCenteredTextLabel(s.getColour().name()));
+                shoesPanel.add(createCenteredTextLabel(String.valueOf(s.getSize())));
 
-            JLabel amountLabel = createCenteredTextLabel("0");
-            amountLabels.add(amountLabel);
+                JLabel amountLabel = createCenteredTextLabel("0");
+                amountLabels.add(amountLabel);
 
-            JButton minusButton = new JButton("-");
-            minusButton.addActionListener(e -> modifyShoeAmount(s, amountLabel, false));
+                JButton minusButton = new JButton("-");
+                minusButton.addActionListener(e -> modifyShoeAmount(s, amountLabel, false));
 
-            JButton plusButton = new JButton("+");
-            plusButton.addActionListener(e -> modifyShoeAmount(s, amountLabel, true));
+                JButton plusButton = new JButton("+");
+                plusButton.addActionListener(e -> modifyShoeAmount(s, amountLabel, true));
 
-            shoesPanel.add(amountLabel);
-            shoesPanel.add(minusButton);
-            shoesPanel.add(plusButton);
+                shoesPanel.add(amountLabel);
+                shoesPanel.add(minusButton);
+                shoesPanel.add(plusButton);
+            }
         });
     }
 
