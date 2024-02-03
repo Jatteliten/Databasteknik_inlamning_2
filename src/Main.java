@@ -1,4 +1,4 @@
-import Frame.ShoppingFrame;
+import frame.ShoppingFrame;
 
 import javax.swing.*;
 import java.io.IOException;

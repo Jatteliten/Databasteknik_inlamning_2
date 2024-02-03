@@ -1,8 +1,8 @@
-package Frame;
+package frame;
 
-import DataBase.Customer;
-import DataBase.Data;
-import DataBase.Repository;
+import database.Customer;
+import database.Data;
+import database.Repository;
 
 import javax.swing.*;
 import java.awt.*;

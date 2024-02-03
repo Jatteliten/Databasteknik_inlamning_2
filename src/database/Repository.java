@@ -1,4 +1,4 @@
-package DataBase;
+package database;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class Repository {
 
     private Repository() {}
 
-    public static Repository getRepository() throws IOException {
+    public static Repository getRepository() {
         if(repository == null){
             repository = new Repository();
         }
@@ -155,7 +155,7 @@ public class Repository {
                 for(Shoe s: shoes){
                     if (s.getId() == rs.getInt("shoeID")){
                         for(Category c: categories){
-                            if(c.getId() == rs.getInt("categoryID")){
+                            if(c.id() == rs.getInt("categoryID")){
                                 s.addToCategories(c);
                                 categoryFound = true;
                                 break;

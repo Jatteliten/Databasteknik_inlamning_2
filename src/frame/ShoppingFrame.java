@@ -1,4 +1,4 @@
-package Frame;
+package frame;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -12,8 +12,7 @@ public class ShoppingFrame extends JFrame {
     private ShoppingFrame() throws IOException {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        add(shopChoicesPanel);
-        pack();
+        switchPanel(Panels.SHOPPING_CHOICES);
         setVisible(true);
     }
 

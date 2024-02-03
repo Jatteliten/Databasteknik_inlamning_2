@@ -1,10 +1,10 @@
-package Frame;
+package frame;
 
-import DataBase.Category;
-import DataBase.Colour;
-import DataBase.Data;
-import DataBase.Repository;
-import DataBase.Shoe;
+import database.Category;
+import database.Colour;
+import database.Data;
+import database.Repository;
+import database.Shoe;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ public class ShoppingPanel extends JPanel {
     private final JComboBox<String> sizeBox = createCategoryComboBox(SIZE,
             Data.getData().getShoes().stream().map(Shoe::getSize).distinct().toList());
     private final JComboBox<String> categoryBox = createCategoryComboBox(CATEGORY,
-            Data.getData().getCategories().stream().map(Category::getName).toList());
+            Data.getData().getCategories().stream().map(Category::name).toList());
     private int orderNumber = NULL_ORDER;
 
     private ShoppingPanel() throws IOException {
@@ -125,7 +125,7 @@ public class ShoppingPanel extends JPanel {
         }
         if(!category.equals(CATEGORY)){
             shoesToDisplay = shoesToDisplay.stream().filter(s -> s.getCategories().stream()
-                    .anyMatch(c -> c.getName().equals(category))).toList();
+                    .anyMatch(c -> c.name().equals(category))).toList();
         }
         return shoesToDisplay;
     }

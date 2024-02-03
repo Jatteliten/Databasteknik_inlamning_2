@@ -1,4 +1,4 @@
-package DataBase;
+package database;
 
 public class Customer {
     private final int id;
