@@ -111,7 +111,7 @@ public class ShoppingPanel extends JPanel {
         }
         if(!category.equals(CATEGORY)){
             shoesToDisplay = shoesToDisplay.stream().filter(s -> s.getCategories().stream()
-                    .anyMatch(cat -> cat.getName().equals(category))).toList();
+                    .anyMatch(c -> c.getName().equals(category))).toList();
         }
         return shoesToDisplay;
     }
