@@ -59,7 +59,7 @@ public class Repository {
             while(rs.next()){
                 Customer newCustomer = new Customer(rs.getInt("id"), rs.getString("name"));
                 for(City c: cities){
-                    if(c.getId() == rs.getInt("cityId")){
+                    if(c.id() == rs.getInt("cityId")){
                         newCustomer.setCity(c);
                         break;
                     }
@@ -127,7 +127,7 @@ public class Repository {
                 Shoe newShoe = new Shoe(rs.getInt("id"), rs.getString("brand"),
                         rs.getInt("price"), rs.getInt("size"), rs.getInt("stock"));
                 for(Colour c: colours){
-                    if(c.getId() == rs.getInt("colourId")){
+                    if(c.id() == rs.getInt("colourId")){
                         newShoe.setColour(c);
                         break;
                     }
