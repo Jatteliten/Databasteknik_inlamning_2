@@ -66,13 +66,10 @@ public class Repository {
              ResultSet rs = stmt.executeQuery("select id, name, cityId from customers")) {
 
             while(rs.next()){
+                int cityIdCheck = rs.getInt("cityID");
                 Customer newCustomer = new Customer(rs.getInt("id"), rs.getString("name"));
-                for(City c: cities){
-                    if(c.id() == rs.getInt("cityId")){
-                        newCustomer.setCity(c);
-                        break;
-                    }
-                }
+
+                cities.stream().filter(c -> c.id() == cityIdCheck).findFirst().ifPresent(newCustomer::setCity);
                 tempList.add(newCustomer);
             }
 
@@ -130,14 +127,11 @@ public class Repository {
              ResultSet rs = stmt.executeQuery("select id, brand, price, colourID, size, stock from shoes")) {
 
             while(rs.next()){
+                int colourIdCheck = rs.getInt("colourID");
                 Shoe newShoe = new Shoe(rs.getInt("id"), rs.getString("brand"),
                         rs.getInt("price"), rs.getInt("size"), rs.getInt("stock"));
-                for(Colour c: colours){
-                    if(c.id() == rs.getInt("colourId")){
-                        newShoe.setColour(c);
-                        break;
-                    }
-                }
+
+                colours.stream().filter(c -> c.id() == colourIdCheck).findFirst().ifPresent(newShoe::setColour);
                 tempList.add(newShoe);
             }
 
@@ -156,10 +150,10 @@ public class Repository {
              ResultSet rs = stmt.executeQuery("select shoeID, categoryID from shoecategory")) {
 
             while(rs.next()){
-                int shoeIDCheck = rs.getInt("shoeID");
+                int shoeIdCheck = rs.getInt("shoeID");
                 int categoryIdCheck = rs.getInt("categoryID");
 
-                shoes.stream().filter(s -> s.getId() == shoeIDCheck).findFirst()
+                shoes.stream().filter(s -> s.getId() == shoeIdCheck).findFirst()
                         .ifPresent(s -> categories.stream().filter(c -> c.id() == categoryIdCheck)
                                 .findFirst().ifPresent(s::addToCategories));
             }
@@ -206,7 +200,6 @@ public class Repository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        shoe.setStock(shoe.getStock() - 1);
         return orderNumberOut;
     }
 
