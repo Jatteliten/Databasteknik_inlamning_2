@@ -7,7 +7,7 @@ public class ShoppingFrame extends JFrame {
     private static ShoppingFrame shoppingFrame;
     private final ShopChoices shopChoicesPanel = ShopChoices.getShopChoices();
     private final UserNameAndPassWordEntry userNameAndPassWordEntry = UserNameAndPassWordEntry.getUserNameAndPassWordEntry();
-    private final ShoppingPanel shoppingPanelPanel = ShoppingPanel.getAddToCart();
+    private final ShoppingPanel shoppingPanelPanel = ShoppingPanel.getShoppingPanel();
 
     private ShoppingFrame() throws IOException {
         setDefaultCloseOperation(EXIT_ON_CLOSE);

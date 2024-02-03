@@ -36,9 +36,7 @@ public class Data {
         this.activeCustomer = activeCustomer;
     }
 
-    public ArrayList<City> getCities() {
-        return cities;
-    }
+    public ArrayList<City> getCities() { return cities; }
 
     public ArrayList<Customer> getCustomers() {
         return customers;

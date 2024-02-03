@@ -41,7 +41,7 @@ public class ShoppingPanel extends JPanel {
         setLayout(new BorderLayout());
     }
 
-    public static ShoppingPanel getAddToCart() throws IOException {
+    public static ShoppingPanel getShoppingPanel() throws IOException {
         if(shoppingPanel == null){
             shoppingPanel = new ShoppingPanel();
             shoppingPanel.initializePanel();
