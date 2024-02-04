@@ -6,7 +6,7 @@ import java.io.IOException;
 public class ShoppingFrame extends JFrame {
     private static ShoppingFrame shoppingFrame;
     private final StartingChoicesPanel shopChoicesPanel = StartingChoicesPanel.getShopChoices();
-    private final UserNameAndPassWordEntry userNameAndPassWordEntry = UserNameAndPassWordEntry.getUserNameAndPassWordEntry();
+    private final UserNameAndPassWordEntryPanel userNameAndPassWordEntryPanel = UserNameAndPassWordEntryPanel.getUserNameAndPassWordEntry();
     private final ShoppingPanel shoppingPanel = ShoppingPanel.getShoppingPanel();
 
     private ShoppingFrame() throws IOException {
@@ -28,7 +28,7 @@ public class ShoppingFrame extends JFrame {
         getContentPane().removeAll();
         switch (panelEnum){
             case STARTING_CHOICES -> add(shopChoicesPanel);
-            case USER_NAME_AND_PASSWORD_ENTRY -> add(userNameAndPassWordEntry);
+            case USER_NAME_AND_PASSWORD_ENTRY -> add(userNameAndPassWordEntryPanel);
             case SHOPPING_PANEL -> { add(shoppingPanel); shoppingPanel.initializeShoppingPanel(); }
         }
         refreshFrame();
