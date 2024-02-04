@@ -37,7 +37,7 @@ public class UserNameAndPassWordEntry extends JPanel {
 
         cancel.addActionListener(e -> {
             try {
-                ShoppingFrame.getShoppingFrame().switchPanel(Panels.SHOPPING_CHOICES);
+                ShoppingFrame.getShoppingFrame().switchPanel(Panels.STARTING_CHOICES);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -70,7 +70,7 @@ public class UserNameAndPassWordEntry extends JPanel {
                 if(userName.getText().equalsIgnoreCase(c.getName()) &&
                         Repository.getRepository().findPassword(c, password.getText())){
                     Data.getData().setActiveCustomer(c);
-                    ShoppingFrame.getShoppingFrame().switchPanel(Panels.ADD_TO_CART);
+                    ShoppingFrame.getShoppingFrame().switchPanel(Panels.SHOPPING_PANEL);
                     customerFound = true;
                     break;
                 }

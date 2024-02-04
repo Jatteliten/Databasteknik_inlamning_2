@@ -1,8 +1,8 @@
 package frame;
 
 public enum Panels {
-    SHOPPING_CHOICES,
-    ADD_TO_CART,
+    STARTING_CHOICES,
+    SHOPPING_PANEL,
     USER_NAME_AND_PASSWORD_ENTRY
 
 }

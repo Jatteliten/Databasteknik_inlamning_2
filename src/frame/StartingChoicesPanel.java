@@ -4,16 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class ShopChoicesPanel extends JPanel {
-    private static ShopChoicesPanel shopChoices;
+public class StartingChoicesPanel extends JPanel {
+    private static StartingChoicesPanel shopChoices;
     private final JButton login = new JButton("Log in");
-    private ShopChoicesPanel(){
+    private StartingChoicesPanel(){
         setLayout(new FlowLayout());
     }
 
-    public static ShopChoicesPanel getShopChoices(){
+    public static StartingChoicesPanel getShopChoices(){
         if (shopChoices == null){
-            shopChoices = new ShopChoicesPanel();
+            shopChoices = new StartingChoicesPanel();
             shopChoices.initializeButtons();
         }
         return shopChoices;
