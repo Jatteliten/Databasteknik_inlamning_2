@@ -9,7 +9,7 @@ public class Shoe {
     private final int size;
     private final ArrayList<Category> categories = new ArrayList<>();
     private Colour colour;
-    private int stock;
+    private final int stock;
 
     public Shoe(int id, String brand, int price, int size, int stock) {
         this.id = id;

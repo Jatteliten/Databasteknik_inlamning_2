@@ -1,6 +1,5 @@
 package database;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Data {
@@ -21,7 +20,7 @@ public class Data {
         Repository.getRepository().assignShoeCategories(shoes, categories);
     }
 
-    public static Data getData() throws IOException {
+    public static Data getData() {
         if(data == null){
             data = new Data();
         }

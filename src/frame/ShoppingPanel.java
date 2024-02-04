@@ -37,11 +37,11 @@ public class ShoppingPanel extends JPanel {
             Data.getData().getCategories().stream().map(Category::name).toList());
     private int orderNumber = NULL_ORDER;
 
-    private ShoppingPanel() throws IOException {
+    private ShoppingPanel() {
         setLayout(new BorderLayout());
     }
 
-    public static ShoppingPanel getShoppingPanel() throws IOException {
+    public static ShoppingPanel getShoppingPanel()  {
         if(shoppingPanel == null){
             shoppingPanel = new ShoppingPanel();
         }
@@ -189,14 +189,8 @@ public class ShoppingPanel extends JPanel {
 
     private void orderShoes() throws IOException {
         if(!shoesInCart.isEmpty()) {
-            shoesInCart.forEach(shoe -> {
-                try {
-                    orderNumber = Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(),
-                            orderNumber, shoe);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
+            shoesInCart.forEach(shoe -> orderNumber = Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(),
+                    orderNumber, shoe));
             displayPurchase();
         }else{
             JOptionPane.showMessageDialog(null, "Your cart is empty!");

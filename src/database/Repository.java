@@ -18,8 +18,8 @@ public class Repository {
     private static final int NULL_ORDER = -1;
     private static final String PROPERTIES_FILE_PATH = "src/Settings.properties";
     private static final String PROPERTIES_CONNECTION_STRING = "connectionString";
-    private static final String PROPERTIES_USER_NAME = "name";
-    private static final String PROPERTIES_PASSWORD = "password";
+    private static final String PROPERTIES_USER_NAME = "serverUsername";
+    private static final String PROPERTIES_PASSWORD = "serverPassword";
     private final Properties P = new Properties();
 
     private Repository() {
