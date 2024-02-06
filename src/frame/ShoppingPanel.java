@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class ShoppingPanel extends JPanel {
     private static ShoppingPanel shoppingPanel;
@@ -106,10 +107,10 @@ public class ShoppingPanel extends JPanel {
     }
 
     private List<Shoe> filterShoesDisplay(List<Shoe> shoesToDisplay) {
-        String brand = brandBox.getSelectedItem().toString();
-        String colour = colourBox.getSelectedItem().toString();
-        String size = sizeBox.getSelectedItem().toString();
-        String category = categoryBox.getSelectedItem().toString();
+        String brand = Objects.requireNonNull(brandBox.getSelectedItem()).toString();
+        String colour = Objects.requireNonNull(colourBox.getSelectedItem()).toString();
+        String size = Objects.requireNonNull(sizeBox.getSelectedItem()).toString();
+        String category = Objects.requireNonNull(categoryBox.getSelectedItem()).toString();
 
         return shoesToDisplay.stream()
                 .filter(s ->
