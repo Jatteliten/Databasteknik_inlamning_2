@@ -28,13 +28,13 @@ public class ShoppingPanel extends JPanel {
     private final JPanel buttonsPanel = new JPanel();
     private final JButton placeOrderButton = new JButton("Place order");
     private final JButton emptyCartButton = new JButton("Empty cart");
-    private final JComboBox<String> brandBox = createCategoryComboBox(BRAND,
+    private final JComboBox<String> brandBox = createFilterComboBox(BRAND,
             Data.getData().getShoes().stream().map(Shoe::getBrand).distinct().toList());
-    private final JComboBox<String> colourBox = createCategoryComboBox(COLOUR,
+    private final JComboBox<String> colourBox = createFilterComboBox(COLOUR,
             Data.getData().getColours().stream().map(Colour::name).distinct().toList());
-    private final JComboBox<String> sizeBox = createCategoryComboBox(SIZE,
+    private final JComboBox<String> sizeBox = createFilterComboBox(SIZE,
             Data.getData().getShoes().stream().map(Shoe::getSize).distinct().toList());
-    private final JComboBox<String> categoryBox = createCategoryComboBox(CATEGORY,
+    private final JComboBox<String> categoryBox = createFilterComboBox(CATEGORY,
             Data.getData().getCategories().stream().map(Category::name).toList());
     private int orderNumber = NULL_ORDER;
 
@@ -70,17 +70,15 @@ public class ShoppingPanel extends JPanel {
                 throw new RuntimeException(ex);
             }
         });
-        buttonsPanel.add(placeOrderButton);
 
+        buttonsPanel.add(placeOrderButton);
         fillShoesPanel();
     }
 
     private void fillShoesPanel() throws IOException {
         shoesPanel.removeAll();
         amountLabels.clear();
-        List<Shoe> shoesToDisplay = Data.getData().getShoes();
-
-        shoesToDisplay = filterShoesDisplay(shoesToDisplay);
+        List<Shoe> shoesToDisplay = filterShoesList(Data.getData().getShoes());
 
         shoesToDisplay.forEach(s -> {
             if(s.getStock() != 0) {
@@ -106,23 +104,21 @@ public class ShoppingPanel extends JPanel {
         ShoppingFrame.getShoppingFrame().refreshFrame();
     }
 
-    private List<Shoe> filterShoesDisplay(List<Shoe> shoesToDisplay) {
+    private List<Shoe> filterShoesList(List<Shoe> shoesToDisplay) {
         String brand = Objects.requireNonNull(brandBox.getSelectedItem()).toString();
         String colour = Objects.requireNonNull(colourBox.getSelectedItem()).toString();
         String size = Objects.requireNonNull(sizeBox.getSelectedItem()).toString();
         String category = Objects.requireNonNull(categoryBox.getSelectedItem()).toString();
 
-        return shoesToDisplay.stream()
-                .filter(s ->
-                        (brand.equals(BRAND) || s.getBrand().equals(brand)) &&
-                        (colour.equals(COLOUR) || s.getColour().name().equals(colour)) &&
-                        (size.equals(SIZE) || String.valueOf(s.getSize()).equals(size)) &&
-                        (category.equals(CATEGORY) || s.getCategories().stream()
-                                .anyMatch(c -> c.name().equals(category))))
+        return shoesToDisplay.stream().filter(s ->
+              (brand.equals(BRAND) || s.getBrand().equals(brand)) &&
+              (colour.equals(COLOUR) || s.getColour().name().equals(colour)) &&
+              (size.equals(SIZE) || String.valueOf(s.getSize()).equals(size)) &&
+              (category.equals(CATEGORY) || s.getCategories().stream().anyMatch(c -> c.name().equals(category))))
                 .toList();
     }
 
-    private JComboBox<String> createCategoryComboBox(String categoryName, List<?> categories) {
+    private JComboBox<String> createFilterComboBox(String categoryName, List<?> categories) {
         JComboBox<String> tempBox = new JComboBox<>();
         tempBox.addItem(categoryName);
 
@@ -186,8 +182,8 @@ public class ShoppingPanel extends JPanel {
 
     private void orderShoes() throws IOException {
         if(!shoesInCart.isEmpty()) {
-            shoesInCart.forEach(shoe -> orderNumber = Repository.getRepository().placeOrder(Data.getData().getActiveCustomer(),
-                    orderNumber, shoe));
+            shoesInCart.forEach(shoe -> orderNumber = Repository.getRepository()
+                    .placeOrder(Data.getData().getActiveCustomer(), orderNumber, shoe));
             displayPurchase();
         }else{
             JOptionPane.showMessageDialog(null, "Your cart is empty!");
@@ -195,19 +191,25 @@ public class ShoppingPanel extends JPanel {
     }
 
     private void displayPurchase() throws IOException {
-        StringBuilder order = new StringBuilder("Order placed!\n\nItems in order:\n");
-        int totalPrice = 0;
-        for (Shoe s : shoesInCart) {
-            order.append(s.getBrand()).append(" |Size: ").append(s.getSize()).append
-                    (" |Colour: ").append(s.getColour().name()).append(" |Price: ").append(s.getPrice()).append(":-\n");
-            totalPrice += s.getPrice();
-        }
-        order.append("Total price: ").append(totalPrice).append(":-");
-        JOptionPane.showMessageDialog(null, order);
+        JOptionPane.showMessageDialog(null, createDisplayedMessage());
 
         Data.getData().reloadShoes();
         fillShoesPanel();
         orderNumber = NULL_ORDER;
+    }
+
+    private StringBuilder createDisplayedMessage() {
+        StringBuilder text = new StringBuilder("Order placed!\n\nItems in order:\n");
+
+        shoesInCart.forEach(s -> text.append(s.getBrand())
+                .append(" |Size: ").append(s.getSize())
+                .append(" |Colour: ").append(s.getColour().name())
+                .append(" |Price: ").append(s.getPrice()).append(":-\n"));
+
+        text.append("Total price: ")
+                .append(shoesInCart.stream().map(Shoe::getPrice).reduce(0, Integer::sum))
+                .append(":-");
+        return text;
     }
 
 }
