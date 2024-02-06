@@ -91,10 +91,10 @@ public class ShoppingPanel extends JPanel {
                 amountLabels.add(amountLabel);
 
                 JButton minusButton = new JButton("-");
-                minusButton.addActionListener(e -> modifyShoeAmount(s, amountLabel, false));
+                minusButton.addActionListener(e -> subtractShoe(s, amountLabel));
 
                 JButton plusButton = new JButton("+");
-                plusButton.addActionListener(e -> modifyShoeAmount(s, amountLabel, true));
+                plusButton.addActionListener(e -> addShoe(s, amountLabel));
 
                 shoesPanel.add(amountLabel);
                 shoesPanel.add(minusButton);
@@ -111,20 +111,14 @@ public class ShoppingPanel extends JPanel {
         String size = sizeBox.getSelectedItem().toString();
         String category = categoryBox.getSelectedItem().toString();
 
-        if(!brand.equals(BRAND)) {
-            shoesToDisplay = shoesToDisplay.stream().filter(s -> s.getBrand().equals(brand)).toList();
-        }
-        if(!colour.equals(COLOUR)) {
-            shoesToDisplay = shoesToDisplay.stream().filter(s -> s.getColour().name().equals(colour)).toList();
-        }
-        if(!size.equals(SIZE)) {
-            shoesToDisplay = shoesToDisplay.stream().filter(s -> String.valueOf(s.getSize()).equals(size)).toList();
-        }
-        if(!category.equals(CATEGORY)){
-            shoesToDisplay = shoesToDisplay.stream().filter(s -> s.getCategories().stream()
-                    .anyMatch(c -> c.name().equals(category))).toList();
-        }
-        return shoesToDisplay;
+        return shoesToDisplay.stream()
+                .filter(s ->
+                        (brand.equals(BRAND) || s.getBrand().equals(brand)) &&
+                        (colour.equals(COLOUR) || s.getColour().name().equals(colour)) &&
+                        (size.equals(SIZE) || String.valueOf(s.getSize()).equals(size)) &&
+                        (category.equals(CATEGORY) || s.getCategories().stream()
+                                .anyMatch(c -> c.name().equals(category))))
+                .toList();
     }
 
     private JComboBox<String> createCategoryComboBox(String categoryName, List<?> categories) {
@@ -166,20 +160,22 @@ public class ShoppingPanel extends JPanel {
         return tempLabel;
     }
 
-    private void modifyShoeAmount(Shoe s, JLabel amountTextField, boolean additive) {
+    private void addShoe(Shoe s, JLabel amountTextField) {
         int currentAmount = Integer.parseInt(amountTextField.getText());
-            if(additive) {
-                if(currentAmount < s.getStock()) {
-                    shoesInCart.add(s);
-                    currentAmount++;
-                }
-            }else{
-                if(currentAmount != 0) {
-                    shoesInCart.remove(s);
-                    currentAmount--;
-                }
-            }
+        if(currentAmount < s.getStock()) {
+            shoesInCart.add(s);
+            currentAmount++;
             amountTextField.setText(String.valueOf(currentAmount));
+        }
+    }
+
+    private void subtractShoe(Shoe s, JLabel amountTextField){
+        int currentAmount = Integer.parseInt(amountTextField.getText());
+        if(currentAmount != 0) {
+            shoesInCart.remove(s);
+            currentAmount--;
+            amountTextField.setText(String.valueOf(currentAmount));
+        }
     }
 
     private void clearShoesFromList() {
