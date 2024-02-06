@@ -10,22 +10,14 @@ import java.awt.event.*;
 import java.io.IOException;
 
 public class UserNameAndPassWordEntryPanel extends JPanel {
-    private static UserNameAndPassWordEntryPanel entry;
     private final JTextField userName = new JTextField("name");
     private final JTextField password = new JTextField("password");
     private final JButton cancel = new JButton("Cancel");
     private final JButton confirm = new JButton("Confirm");
 
-    private UserNameAndPassWordEntryPanel(){
+    public UserNameAndPassWordEntryPanel(){
         setLayout(new FlowLayout());
-    }
-
-    public static UserNameAndPassWordEntryPanel getUserNameAndPassWordEntry(){
-        if(entry == null){
-            entry = new UserNameAndPassWordEntryPanel();
-            entry.initializePanel();
-        }
-        return entry;
+        initializePanel();
     }
 
     private void initializePanel(){

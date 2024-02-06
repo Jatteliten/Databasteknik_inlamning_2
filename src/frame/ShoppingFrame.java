@@ -5,8 +5,8 @@ import java.io.IOException;
 
 public class ShoppingFrame extends JFrame {
     private static ShoppingFrame shoppingFrame;
-    private final StartingChoicesPanel shopChoicesPanel = StartingChoicesPanel.getShopChoices();
-    private final UserNameAndPassWordEntryPanel userNameAndPassWordEntryPanel = UserNameAndPassWordEntryPanel.getUserNameAndPassWordEntry();
+    private final StartingChoicesPanel shopChoicesPanel = new StartingChoicesPanel();
+    private final UserNameAndPassWordEntryPanel userNameAndPassWordEntryPanel = new UserNameAndPassWordEntryPanel();
     private final ShoppingPanel shoppingPanel = ShoppingPanel.getShoppingPanel();
 
     private ShoppingFrame() throws IOException {

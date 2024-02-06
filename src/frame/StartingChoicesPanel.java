@@ -5,18 +5,10 @@ import java.awt.*;
 import java.io.IOException;
 
 public class StartingChoicesPanel extends JPanel {
-    private static StartingChoicesPanel shopChoices;
     private final JButton login = new JButton("Log in");
-    private StartingChoicesPanel(){
+    public StartingChoicesPanel(){
         setLayout(new FlowLayout());
-    }
-
-    public static StartingChoicesPanel getShopChoices(){
-        if (shopChoices == null){
-            shopChoices = new StartingChoicesPanel();
-            shopChoices.initializeButtons();
-        }
-        return shopChoices;
+        initializeButtons();
     }
 
     private void initializeButtons(){
