@@ -7,7 +7,7 @@ import java.io.IOException;
 public class StartingChoicesPanel extends JPanel {
 
     public StartingChoicesPanel(){
-        setLayout(new FlowLayout());
+        setLayout(new BorderLayout());
         initializeButtons();
     }
 
@@ -21,6 +21,6 @@ public class StartingChoicesPanel extends JPanel {
                 throw new RuntimeException(ex);
             }
         });
-        add(login);
+        add(login, BorderLayout.NORTH);
     }
 }
