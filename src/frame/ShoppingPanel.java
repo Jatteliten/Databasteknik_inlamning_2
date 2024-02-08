@@ -25,8 +25,6 @@ public class ShoppingPanel extends JPanel {
     private final JPanel boxPanel = new JPanel();
     private final JPanel shoesPanel = new JPanel();
     private final JPanel buttonsPanel = new JPanel();
-    private final JButton placeOrderButton = new JButton("Place order");
-    private final JButton emptyCartButton = new JButton("Empty cart");
     private final JComboBox<String> brandBox = createFilterComboBox(BRAND,
             Data.getData().getShoes().stream().map(Shoe::getBrand).distinct().toList());
     private final JComboBox<String> colourBox = createFilterComboBox(COLOUR,
@@ -52,9 +50,11 @@ public class ShoppingPanel extends JPanel {
         add(shoesPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
 
+        JButton emptyCartButton = new JButton("Empty cart");
         emptyCartButton.addActionListener(e -> clearShoesFromList());
         buttonsPanel.add(emptyCartButton);
 
+        JButton placeOrderButton = new JButton("Place order");
         placeOrderButton.addActionListener(e -> {
             try {
                 orderShoes();
