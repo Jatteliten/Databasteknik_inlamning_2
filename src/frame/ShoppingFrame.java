@@ -7,7 +7,7 @@ public class ShoppingFrame extends JFrame {
     private static ShoppingFrame shoppingFrame;
     private final StartingChoicesPanel shopChoicesPanel = new StartingChoicesPanel();
     private final UserNameAndPassWordEntryPanel userNameAndPassWordEntryPanel = new UserNameAndPassWordEntryPanel();
-    private final ShoppingPanel shoppingPanel = ShoppingPanel.getShoppingPanel();
+    private final ShoppingPanel shoppingPanel = new ShoppingPanel();
 
     private ShoppingFrame() throws IOException {
         setTitle("Shoe store");

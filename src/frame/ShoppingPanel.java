@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class ShoppingPanel extends JPanel {
-    private static ShoppingPanel shoppingPanel;
     private static final String BRAND = "Brand";
     private static final String COLOUR = "Colour";
     private static final String SIZE = "Size";
@@ -38,15 +37,8 @@ public class ShoppingPanel extends JPanel {
             Data.getData().getCategories().stream().map(Category::name).toList());
     private int orderNumber = NULL_ORDER;
 
-    private ShoppingPanel() {
+    public ShoppingPanel() {
         setLayout(new BorderLayout());
-    }
-
-    public static ShoppingPanel getShoppingPanel()  {
-        if(shoppingPanel == null){
-            shoppingPanel = new ShoppingPanel();
-        }
-        return shoppingPanel;
     }
 
     public void initializeShoppingPanel() throws IOException {
