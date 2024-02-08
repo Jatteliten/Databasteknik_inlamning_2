@@ -5,13 +5,14 @@ import java.awt.*;
 import java.io.IOException;
 
 public class StartingChoicesPanel extends JPanel {
-    private final JButton login = new JButton("Log in");
+
     public StartingChoicesPanel(){
         setLayout(new FlowLayout());
         initializeButtons();
     }
 
     private void initializeButtons(){
+        JButton login = new JButton("Log in");
         login.setPreferredSize(new Dimension(200,50));
         login.addActionListener(e -> {
             try {
