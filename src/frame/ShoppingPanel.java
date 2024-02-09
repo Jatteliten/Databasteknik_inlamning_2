@@ -15,23 +15,22 @@ import java.util.List;
 import java.util.Objects;
 
 public class ShoppingPanel extends JPanel {
-    private static final String BRAND = "Brand";
-    private static final String COLOUR = "Colour";
-    private static final String SIZE = "Size";
-    private static final String CATEGORY = "Category";
+    private static final String ALL = "All";
     private static final int NULL_ORDER = -1;
     private final ArrayList<Shoe> shoesInCart = new ArrayList<>();
-    private final ArrayList<JLabel> amountLabels = new ArrayList<>();
+    private final ArrayList<JTextField> amountFields = new ArrayList<>();
     private final JPanel boxPanel = new JPanel();
     private final JPanel shoesPanel = new JPanel();
+    private final JPanel incrementPanel = new JPanel();
     private final JPanel buttonsPanel = new JPanel();
-    private final JComboBox<String> brandBox = createFilterComboBox(BRAND,
+    private final Dimension addToCartButtonsDimension = new Dimension(40, 25);
+    private final JComboBox<String> brandBox = createFilterComboBox(
             Data.getData().getShoes().stream().map(Shoe::getBrand).distinct().toList());
-    private final JComboBox<String> colourBox = createFilterComboBox(COLOUR,
+    private final JComboBox<String> colourBox = createFilterComboBox(
             Data.getData().getColours().stream().map(Colour::name).distinct().toList());
-    private final JComboBox<String> sizeBox = createFilterComboBox(SIZE,
+    private final JComboBox<String> sizeBox = createFilterComboBox(
             Data.getData().getShoes().stream().map(Shoe::getSize).distinct().toList());
-    private final JComboBox<String> categoryBox = createFilterComboBox(CATEGORY,
+    private final JComboBox<String> categoryBox = createFilterComboBox(
             Data.getData().getCategories().stream().map(Category::name).toList());
     private int orderNumber = NULL_ORDER;
 
@@ -41,14 +40,22 @@ public class ShoppingPanel extends JPanel {
 
     public void initializeShoppingPanel() throws IOException {
         add(boxPanel, BorderLayout.NORTH);
+        add(shoesPanel, BorderLayout.CENTER);
+        add(incrementPanel, BorderLayout.EAST);
+        add(buttonsPanel, BorderLayout.SOUTH);
+
+        boxPanel.setLayout(new GridLayout(2, 4));
+        shoesPanel.setLayout(new GridLayout(0, 4));
+        incrementPanel.setLayout(new GridLayout(0, 3));
+
+        boxPanel.add(createCenteredTextLabel("Brand:"));
+        boxPanel.add(createCenteredTextLabel("Colour:"));
+        boxPanel.add(createCenteredTextLabel("Size:"));
+        boxPanel.add(createCenteredTextLabel("Category:"));
         boxPanel.add(brandBox);
         boxPanel.add(colourBox);
         boxPanel.add(sizeBox);
         boxPanel.add(categoryBox);
-
-        shoesPanel.setLayout(new GridLayout(0, 6));
-        add(shoesPanel, BorderLayout.CENTER);
-        add(buttonsPanel, BorderLayout.SOUTH);
 
         JButton emptyCartButton = new JButton("Empty cart");
         emptyCartButton.addActionListener(e -> clearShoesFromList());
@@ -62,14 +69,15 @@ public class ShoppingPanel extends JPanel {
                 throw new RuntimeException(ex);
             }
         });
-
         buttonsPanel.add(placeOrderButton);
+
         fillShoesPanel();
     }
 
     private void fillShoesPanel() throws IOException {
         shoesPanel.removeAll();
-        amountLabels.clear();
+        incrementPanel.removeAll();
+        amountFields.clear();
         List<Shoe> shoesToDisplay = filterShoesList(Data.getData().getShoes());
 
         shoesToDisplay.forEach(s -> {
@@ -77,19 +85,22 @@ public class ShoppingPanel extends JPanel {
                 shoesPanel.add(createCenteredTextLabel(s.getBrand()));
                 shoesPanel.add(createCenteredTextLabel(s.getColour().name()));
                 shoesPanel.add(createCenteredTextLabel(String.valueOf(s.getSize())));
+                shoesPanel.add(createCenteredTextLabel(s.getPrice() + ":-"));
 
-                JLabel amountLabel = createCenteredTextLabel("0");
-                amountLabels.add(amountLabel);
+                JTextField amountField = createSmallCenteredTextField();
+                amountFields.add(amountField);
 
                 JButton minusButton = new JButton("-");
-                minusButton.addActionListener(e -> subtractShoe(s, amountLabel));
+                minusButton.setPreferredSize(addToCartButtonsDimension);
+                minusButton.addActionListener(e -> subtractShoe(s, amountField));
 
                 JButton plusButton = new JButton("+");
-                plusButton.addActionListener(e -> addShoe(s, amountLabel));
+                plusButton.setPreferredSize(addToCartButtonsDimension);
+                plusButton.addActionListener(e -> addShoe(s, amountField));
 
-                shoesPanel.add(amountLabel);
-                shoesPanel.add(minusButton);
-                shoesPanel.add(plusButton);
+                incrementPanel.add(amountField);
+                incrementPanel.add(minusButton);
+                incrementPanel.add(plusButton);
             }
         });
         clearShoesFromList();
@@ -103,16 +114,16 @@ public class ShoppingPanel extends JPanel {
         String category = Objects.requireNonNull(categoryBox.getSelectedItem()).toString();
 
         return shoesToDisplay.stream().filter(s ->
-              (brand.equals(BRAND) || s.getBrand().equals(brand)) &&
-              (colour.equals(COLOUR) || s.getColour().name().equals(colour)) &&
-              (size.equals(SIZE) || String.valueOf(s.getSize()).equals(size)) &&
-              (category.equals(CATEGORY) || s.getCategories().stream().anyMatch(c -> c.name().equals(category))))
+              (brand.equals(ALL) || s.getBrand().equals(brand)) &&
+              (colour.equals(ALL) || s.getColour().name().equals(colour)) &&
+              (size.equals(ALL) || String.valueOf(s.getSize()).equals(size)) &&
+              (category.equals(ALL) || s.getCategories().stream().anyMatch(c -> c.name().equals(category))))
                 .toList();
     }
 
-    private JComboBox<String> createFilterComboBox(String categoryName, List<?> categories) {
+    private JComboBox<String> createFilterComboBox(List<?> categories) {
         JComboBox<String> tempBox = new JComboBox<>();
-        tempBox.addItem(categoryName);
+        tempBox.addItem(ShoppingPanel.ALL);
 
         if (checkIfItemIsNumber(categories.get(0).toString())) {
             List<Integer> integerList = new ArrayList<>();
@@ -149,7 +160,15 @@ public class ShoppingPanel extends JPanel {
         return tempLabel;
     }
 
-    private void addShoe(Shoe s, JLabel amountTextField) {
+    private JTextField createSmallCenteredTextField(){
+        JTextField tempField = new JTextField("0");
+        tempField.setPreferredSize(addToCartButtonsDimension);
+        tempField.setEditable(false);
+        tempField.setHorizontalAlignment(SwingConstants.CENTER);
+        return tempField;
+    }
+
+    private void addShoe(Shoe s, JTextField amountTextField) {
         int currentAmount = Integer.parseInt(amountTextField.getText());
         if(currentAmount < s.getStock()) {
             shoesInCart.add(s);
@@ -158,7 +177,7 @@ public class ShoppingPanel extends JPanel {
         }
     }
 
-    private void subtractShoe(Shoe s, JLabel amountTextField){
+    private void subtractShoe(Shoe s, JTextField amountTextField){
         int currentAmount = Integer.parseInt(amountTextField.getText());
         if(currentAmount != 0) {
             shoesInCart.remove(s);
@@ -168,7 +187,7 @@ public class ShoppingPanel extends JPanel {
     }
 
     private void clearShoesFromList() {
-        amountLabels.forEach(l -> l.setText("0"));
+        amountFields.forEach(l -> l.setText("0"));
         shoesInCart.clear();
     }
 
@@ -198,7 +217,7 @@ public class ShoppingPanel extends JPanel {
                 .append(" |Colour: ").append(s.getColour().name())
                 .append(" |Price: ").append(s.getPrice()).append(":-\n"));
 
-        text.append("Total price: ")
+        text.append("\nTotal price: ")
                 .append(shoesInCart.stream().map(Shoe::getPrice).reduce(0, Integer::sum))
                 .append(":-");
         return text;
