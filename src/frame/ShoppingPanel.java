@@ -17,6 +17,7 @@ import java.util.Objects;
 public class ShoppingPanel extends JPanel {
     private static final String ALL = "All";
     private static final int NULL_ORDER = -1;
+    private int orderNumber = NULL_ORDER;
     private final ArrayList<Shoe> shoesInCart = new ArrayList<>();
     private final ArrayList<JTextField> amountFields = new ArrayList<>();
     private final JPanel boxPanel = new JPanel();
@@ -32,7 +33,6 @@ public class ShoppingPanel extends JPanel {
             Data.getData().getShoes().stream().map(Shoe::getSize).distinct().toList());
     private final JComboBox<String> categoryBox = createFilterComboBox(
             Data.getData().getCategories().stream().map(Category::name).toList());
-    private int orderNumber = NULL_ORDER;
 
     public ShoppingPanel() {
         setLayout(new BorderLayout());
