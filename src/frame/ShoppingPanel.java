@@ -87,7 +87,7 @@ public class ShoppingPanel extends JPanel {
                 shoesPanel.add(createCenteredTextLabel(String.valueOf(s.getSize())));
                 shoesPanel.add(createCenteredTextLabel(s.getPrice() + ":-"));
 
-                JTextField amountField = createSmallCenteredTextField();
+                JTextField amountField = createItemInCartCounterTextField();
                 amountFields.add(amountField);
 
                 JButton minusButton = new JButton("-");
@@ -160,7 +160,7 @@ public class ShoppingPanel extends JPanel {
         return tempLabel;
     }
 
-    private JTextField createSmallCenteredTextField(){
+    private JTextField createItemInCartCounterTextField(){
         JTextField tempField = new JTextField("0");
         tempField.setPreferredSize(addToCartButtonsDimension);
         tempField.setEditable(false);
