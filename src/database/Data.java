@@ -56,6 +56,7 @@ public class Data {
     public void reloadShoes() {
         shoes.clear();
         shoes = Repository.getRepository().loadShoes(colours);
+        Repository.getRepository().assignShoeCategories(shoes, categories);
     }
 
 }
