@@ -28,7 +28,7 @@ public class ShoppingPanel extends JPanel {
     private final JComboBox<String> brandBox = createFilterComboBox(
             Data.getData().getShoes().stream().map(Shoe::getBrand).distinct().toList());
     private final JComboBox<String> colourBox = createFilterComboBox(
-            Data.getData().getColours().stream().map(Colour::name).distinct().toList());
+            Data.getData().getColours().stream().map(Colour::name).toList());
     private final JComboBox<String> sizeBox = createFilterComboBox(
             Data.getData().getShoes().stream().map(Shoe::getSize).distinct().toList());
     private final JComboBox<String> categoryBox = createFilterComboBox(
